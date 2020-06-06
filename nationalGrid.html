@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <html>
     <head>
         <title>ThreeGeoJSON Demo</title>
@@ -73,3 +74,80 @@
         </script>
 	</body>
 </html>
+=======
+<html>
+    <head>
+        <title>ThreeGeoJSON Demo</title>
+        <!-- Loads the FlighttLines.geojson file into THREE.js (3D) -->
+
+
+        <script src="lib/threeGeoJSON.js"></script>
+
+        <!-- Three.js library, movement controls, and jquery for the geojson-->
+        <script src="lib/three.js"></script>
+        <script src="lib/OrbitControls.js"></script>
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    </head>
+    <body>
+        <style>
+            html, body {
+                padding: 0;
+                margin: 0;
+            }
+        </style>
+        <script type="text/JavaScript">
+        
+            //New scene and camera
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.0001, 100);
+
+            //New Renderer
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            var planet = new THREE.Object3D();
+
+            //Draw the GeoJSON
+            //Set the shape to 'Grid' in order to normalize the grid coordinates
+            // and handle the third element for height in the FlightLines.geojson file
+            $.getJSON("test_geojson/FlightLines.geojson", function(data) {
+                drawThreeGeo(data, 10, 'Grid', {
+                    color: 0x80FF80
+                }, planet);
+            });
+
+            // PhotoLocations.geojson is not loading correctly at the moment
+
+            // $.getJSON("test_geojson/PhotoLocations.geojson", function(data) {
+            //     drawThreeGeo(data, 10, 'Grid', {
+            //         color: 0x80FFFF
+            //     }, planet);
+            // });
+
+            scene.add(planet);
+
+            //Set the camera position
+            camera.position.z = 0.01;
+
+            // Moving the universe around the ship instead of the ship moving through the universe
+            // Pointing the camera to the first coordinate from the FlightLines.geojson file by moving the plane
+            planet.position.y = -((259010.228952339093667 / 2500000) * 10);
+            planet.position.x = -((545720.861694405553862 / 2500000) * 10);
+
+            //Enable controls
+            var controls = new THREE.OrbitControls(camera, renderer.domElement);
+            //controls.minDistance = 1;
+
+            //Render the image
+            function render() {
+                controls.update();
+                requestAnimationFrame(render);
+                renderer.render(scene, camera);
+            }
+
+            render();
+        </script>
+	</body>
+</html>
+>>>>>>> ecc017a897e4b6c7f4fc2ef942ba0baec85a7f58

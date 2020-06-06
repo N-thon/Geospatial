@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <html>
     <head>
         <title>ThreeGeoJSON Demo</title>
@@ -106,3 +107,113 @@
         </script>
 	</body>
 </html>
+=======
+<html>
+    <head>
+        <title>ThreeGeoJSON Demo</title>
+
+        <script src="lib/threeGeoJSON.js"></script>
+
+        <!-- Three.js library, movement controls, and jquery for the geojson-->
+        <script src="lib/three.min.js"></script>
+        <script src="lib/TrackballControls.js"></script>
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    </head>
+    <body>
+        <style>
+            html, body {
+                padding: 0;
+                margin: 0;
+            }
+        </style>
+		<script type="text/JavaScript">
+            //New scene and camera
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.5, 1000);
+
+            //New Renderer
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            var planet = new THREE.Object3D();
+
+            //Create a sphere to make visualization easier.
+            //var geometry = new THREE.SphereGeometry(10, 32, 32);
+            //var material = new THREE.MeshBasicMaterial({
+              //  color: 0x333333,
+                //wireframe: true,
+                //transparent: true
+            //});
+            //var sphere = new THREE.Mesh(geometry, material);
+
+            //planet.add(sphere);
+
+
+            var geometry = new THREE.PlaneGeometry( 5, 20, 32 );
+            var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+            var plane = new THREE.Mesh( geometry, material );
+            
+
+            planet.add(plane);
+
+            //Draw the GeoJSON
+            $.getJSON("test_geojson/flight4326.geojson", function(data) {
+                drawThreeGeo(data, 10, 'plane', {
+                    color: 0x80FF80
+                }, scene);
+            });
+
+            //$.getJSON("test_geojson/rivers.geojson", function(data) {
+            //    drawThreeGeo(data, 10, 'sphere', {
+            //        color: 0x80FF80
+            //    }, planet);
+            //});
+
+            //$.getJSON("test_geojson/world_highways.geojson", function(data) {
+            //    drawThreeGeo(data, 10, 'sphere', {
+            //        color: 0x80FF80
+            //    }, planet);
+            //});
+
+            //$.getJSON("test_geojson/countries_states.geojson", function(data) {
+            //    drawThreeGeo(data, 10, 'sphere', {
+            //        color: 0x80FF80
+            //    }, planet);
+            //});
+
+            $.getJSON("test_geojson/countries.json", function(data) {
+                drawThreeGeo(data, 10, 'plane', {
+                    color: 0x8080FF
+                }, scene);
+            });
+
+            //scene.add(planet);
+
+            //Set the camera position
+            camera.position.z = 1;
+
+            //camera.position.set(5,5,5);
+            camera.lookAt(new THREE.Vector3 (50,0,0));
+            camera.updateProjectionMatrix();
+
+            //Enable controls
+            var controls = new THREE.TrackballControls(camera);
+            controls.minDistance = 2;
+
+            //Render the image
+            function render() {
+                controls.update();
+                requestAnimationFrame(render);
+                renderer.render(scene, camera);
+                //planet.rotation.x += 0.01;
+                planet.rotation.y += 0.005;
+                planet.rotation.z += 0.0075;
+                //planet.position.set( 0,5000,0 )
+            }
+
+            render();
+        </script>
+	</body>
+</html>
+>>>>>>> ecc017a897e4b6c7f4fc2ef942ba0baec85a7f58

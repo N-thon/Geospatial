@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <html>
     <head>
         <title>ThreeGeoJSON Demo</title>
@@ -82,3 +83,89 @@
         </script>
 	</body>
 </html>
+=======
+<html>
+    <head>
+        <title>ThreeGeoJSON Demo</title>
+        <!-- Loads the flight4326.geojson file into THREE.js (2D) -->
+
+
+        <script src="lib/threeGeoJSON.js"></script>
+
+        <!-- Three.js library, movement controls, and jquery for the geojson-->
+        <script src="lib/three.js"></script>
+        <script src="lib/OrbitControls.js"></script>
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    </head>
+    <body>
+        <style>
+            html, body {
+                padding: 0;
+                margin: 0;
+            }
+        </style>
+        <script type="text/JavaScript">
+        
+
+            //New scene and camera
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.0001, 100);
+
+            //New Renderer
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            var planet = new THREE.Object3D();
+
+            //Create a plane to make visualization easier.
+            // var geometry = new THREE.PlaneGeometry(10, 10, 10);
+            // var material = new THREE.MeshBasicMaterial({
+            //     color: 0xff0000, 
+            //     side: THREE.DoubleSide,
+            //     wireframe: true,
+            //     transparent: true
+            // });
+            // var plane = new THREE.Mesh(geometry, material);
+            //planet.add(plane);
+
+            //Draw the GeoJSON
+            //'flight4326.geojson' uses long and lat coordinates
+            $.getJSON("test_geojson/flight4326.geojson", function(data) {
+                drawThreeGeo(data, 10, 'plane', {
+                    color: 0x80FF80
+                }, planet);
+            });
+
+            $.getJSON("test_geojson/countries.json", function(data) {
+                drawThreeGeo(data, 10, 'plane', {
+                    color: 0x8080FF
+                }, planet);
+            });
+
+            scene.add(planet);
+
+            //Set the camera position
+            camera.position.z = 0.001;
+
+            //Set planet position
+            //Moves the planet plane to align camera with Cambridge
+            planet.position.y = -((52.210050095924451 / 180) * 10);
+            planet.position.x = -((0.131283713026043 / 180) * 10);
+
+            //Enable controls
+            var controls = new THREE.OrbitControls(camera, renderer.domElement);
+            //controls.minDistance = 1;
+
+            //Render the image
+            function render() {
+                controls.update();
+                requestAnimationFrame(render);
+                renderer.render(scene, camera);
+            }
+
+            render();
+        </script>
+	</body>
+</html>
+>>>>>>> ecc017a897e4b6c7f4fc2ef942ba0baec85a7f58
