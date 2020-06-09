@@ -1,66 +1,83 @@
-
 <html>
-    <head>
-        <title>Shapefile Demo</title>
-        <!-- Loads the FlighttLines.shp file into THREE.js -->
+  <head>
+    <title>Shapefile Demo</title>
+    <!-- Loads the FlighttLines.shp file into THREE.js -->
 
-        <!-- Three.js library, movement controls, and jquery for the geojson-->
-        <script src="lib/three.js"></script>
-        <script src="lib/shapefile/shapefile.js"></script>
-        <script src="lib/shapefile/ShapefileLoader.js"></script>
-        <script src="lib/OrbitControls.js"></script>
-        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-    </head>
-    <body>
-        <style>
-            html, body {
-                padding: 0;
-                margin: 0;
-            }
-        </style>
-        <script type="text/JavaScript">
-        
-            //New scene and camera
-            var scene = new THREE.Scene();
-            var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
+    <!-- Three.js library, movement controls, and jquery for the geojson-->
+    <script src="lib/three.js"></script>
+    <script src="lib/shapefile/shapefile.js"></script>
+    <script src="lib/shapefile/ShapefileLoader.js"></script>
 
-            //New Renderer
-            var renderer = new THREE.WebGLRenderer();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.body.appendChild(renderer.domElement);
+    <script src="lib/OrbitControls.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+  </head>
+  <body>
+    <style>
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+    <script type="text/JavaScript">
 
-            
-            const loader = new ShapefileLoader();
-				loader.transform = transform;
+                 //New scene and camera
+                 var scene = new THREE.Scene();
+                 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
 
-				// group all shapefile scene nodes into this node
-				const shapeNode = new THREE.Object3D();
-				viewer.scene.scene.add(shapeNode);
-				
-				// load natural.shp and change colors to green
-				const shpNatural = loader.load("./test_shapefile/FlightLines.shp");
-				shapeNode.add(shpNatural.node);
-
-				shpNatural.node.traverse(node => {
-					if(node.material){
-                        node.material.color.setRGB(0, 1, 0)
-                    }
-                });
+                 //New Renderer
+                 var renderer = new THREE.WebGLRenderer();
+                 renderer.setSize(window.innerWidth, window.innerHeight);
+                 document.body.appendChild(renderer.domElement);
 
 
-            //Enable controls
-            var controls = new THREE.OrbitControls(camera, renderer.domElement);
-            //controls.minDistance = 1;
+                 const loader = new ShapefileLoader();
+      //    loader.transform = transform;
 
-            //Render the image
-            function render() {
-                controls.update();
-                requestAnimationFrame(render);
-                renderer.render(scene, camera);
-            }
+         // group all shapefile scene nodes into this node
+        //  const shapeNode = new THREE.Object3D();
+        // scene.add(shapeNode);
 
-            render();
-        </script>
-	</body>
+         // load natural.shp and change colors to green
+
+         const shpNatural = loader.load("./test_shapefile/FlightLines.shp").then((shp) => {
+            console.log("individual lines", shp)
+            scene.add(shp.node);
+            // shapeNode.add(shp);
+
+
+
+            shp.node.traverse(node => {
+         	if(node.material){
+                             node.material.color.setRGB(0, 1, 0)
+                         }
+                     });
+
+         })
+
+         console.log("the scene", scene);
+         camera.position.z = -10;
+         camera.position.x = 545720;
+         camera.position.y = 259010;
+
+        //  camera.updateWorldMatrix();
+
+
+
+                 //Enable controls
+                 var controls = new THREE.OrbitControls(camera, renderer.domElement);
+                 //controls.minDistance = 1;
+
+                 console.log(controls);
+
+                 //Render the image
+                 function render() {
+                     controls.update();
+                     requestAnimationFrame(render);
+                     renderer.render(scene, camera);
+                 }
+
+                 render();
+    </script>
+  </body>
 </html>
-
