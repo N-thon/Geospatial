@@ -41,7 +41,7 @@
          // load natural.shp and change colors to green
 
          const shpFL = loader.load("./test_shapefile/FlightLines.shp").then((shp) => {
-            //console.log("individual lines", shp)
+            console.log("individual lines", shp)
             scene.add(shp.node);
             // shapeNode.add(shp);
 
@@ -55,7 +55,7 @@
 
 
          const shpPL = loader.load("./test_shapefile/PhotoLocations.shp").then((shp) => {
-            console.log("individual lines", shp)
+            //console.log("individual lines", shp)
             scene.add(shp.node);
             // shapeNode.add(shp);
 
@@ -84,7 +84,7 @@
                  //controls.rotateSpeed = 0.01;
                  controls.target.x =  545720;
                  controls.target.y = 259010;
-                 controls.target.z = 4.003;
+                 controls.target.z = 118.003;
 
 
 
